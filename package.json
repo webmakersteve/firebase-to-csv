@@ -9,6 +9,7 @@
   "keywords": [
     "XLS"
   ],
+  "repository": "git@github.com:webmakersteve/firebase-to-csv.git",
   "author": "Stephen Parente",
   "license": "GPL-3.0",
   "dependencies": {
@@ -17,5 +18,8 @@
     "firebase": "^2.2.5",
     "lodash": "^3.9.3",
     "when": "^3.7.3"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5"
   }
 }

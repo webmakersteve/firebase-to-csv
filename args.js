@@ -53,6 +53,16 @@ Arguments.prototype.last = function() {
 	return last;
 }
 
+Arguments.prototype.penultimate = function() {
+	var keys = Object.keys(this.args); 
+	var key = keys.reverse()[1];
+
+	if (key == undefined) return undefined;
+
+	var arg = this.args[key];
+	return arg;
+}
+
 Arguments.prototype.extend = function(key, cb) {
 	this.fn[key] = cb.bind(this);
 }

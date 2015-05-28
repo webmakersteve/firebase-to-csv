@@ -32,10 +32,22 @@ function fetch(url, cb, path) {
 
 if (require.main === module) {
 
-	args.extend('firebaseUrl', function() {
-		return this.last();
+	args.extend('filepath', function() {
+		var path = this.penultimate();
+		if (!path) return false;
+		path = this.last();
+
+		return _.resolvePath(path);
+
 	});
 
+	args.extend('firebaseUrl', function() {
+		var arg = this.penultimate();
+		if (!arg) arg = this.last();
+		return arg;
+	});
+
+	var path = args.getArgument('filepath', './export.csv');
 	var firebaseUrl = args.getArgument('firebaseUrl', new Error('Must specify a firebase URL'));
 
 	colors.setTheme({
@@ -54,16 +66,17 @@ if (require.main === module) {
 		}
 	});
 
+	/*
 	fetch(firebaseUrl, function(stream) {
 		stream
 			.pipe(process.stdout);
 
 		stream.on('end', process.exit);
-	});
+	});*/
 
-	/*fetch(firebaseUrl, function() {
+	fetch(firebaseUrl, function() {
 		process.exit();
-	}, './export.csv');*/
+	}, path);
 
 }
 
