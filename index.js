@@ -8,7 +8,7 @@ function fetch(url, cb, path) {
 	if (!cb) cb = function() {};
 	path = path || false;
 
-	var firebase = new Firebase(firebaseUrl);
+	var firebase = new Firebase(url);
 
 	firebase.on('value', function(snap) {
 		var value = snap.val();
