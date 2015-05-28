@@ -4,9 +4,9 @@ var colors = require('colors');
 var _ = require('./tools');
 var Exporter = require('./exporter');
 
-function fetch(url, path, cb) {
+function fetch(url, cb, path) {
 	if (!cb) cb = function() {};
-	path = path || './export.csv';
+	path = path || false;
 
 	var firebase = new Firebase(firebaseUrl);
 
@@ -16,6 +16,10 @@ function fetch(url, path, cb) {
 		var data = _.prepareCSV(array);
 
 		var e = new Exporter(path);
+		if (path === false) {
+			return cb(e.toStream(data));
+		}
+
 		e.writeToFile(data);
 
 		e.on('finished', cb);
@@ -50,9 +54,16 @@ if (require.main === module) {
 		}
 	});
 
-	fetch(firebaseUrl, false, function() {
-		process.exit();
+	fetch(firebaseUrl, function(stream) {
+		stream
+			.pipe(process.stdout);
+
+		stream.on('end', process.exit);
 	});
+
+	/*fetch(firebaseUrl, function() {
+		process.exit();
+	}, './export.csv');*/
 
 }
 
